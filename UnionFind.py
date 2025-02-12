@@ -6,17 +6,26 @@ class UnionFind:
         self.numComponents = size
     
     def find(self, p):
-        # find the root
-        root = p
-        while root != self.id[root]:
-            root = self.id[root]
+        # find + path compression
+        while p != self.id[p]:
+            # set next to grandparent, note how if its already root nothing changes
+            self.id[p] = self.id[self.id[p]]
+            p = self.id[p]
+        return p
         
-        # path compression
-        while p != root:
-            next = self.id[p]
-            self.id[p] = root
-            p = next
-        return root
+        # below is verbose method of find + path compression
+        
+        # find the root
+        # root = p
+        # while root != self.id[root]:
+        #     root = self.id[root]
+        
+        # # path compression
+        # while p != root:
+        #     next = self.id[p]
+        #     self.id[p] = root
+        #     p = next
+        # return root
     
     def union(self, p, q):
         # find p and q and union their sets
